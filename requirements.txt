@@ -1,4 +1,5 @@
 streamlit
-google-genai==0.16.0
+google-genai
 PyPDF2
+
 
