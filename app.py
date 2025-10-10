@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-import google.generativeai as genai
+import google.genai as genai
 import PyPDF2
 import io
 
@@ -101,3 +101,4 @@ if analyze_button:
             st.write(ai_suggestion)
             
 st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
+
