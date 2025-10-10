@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import google.genai as genai
+from google.genai import configure # configure関数を直接インポート
 import PyPDF2
 import io
 
@@ -10,7 +11,8 @@ st.markdown("---")
 
 # GeminiのAPIキーをsecretsから取得し設定
 try:
-    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    # genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    configure(api_key=API_KEY)
     model = genai.GenerativeModel('gemini-2.5-flash')
 except Exception as e:
     st.error(f"モデルのロードに失敗しました: {e}")
@@ -101,4 +103,5 @@ if analyze_button:
             st.write(ai_suggestion)
             
 st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
+
 
