@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import google.genai as genai
+from google.genai import models # GenerativeModelを含むモジュールをインポート
 import PyPDF2
 import io
 import os # APIキーの取得に必要
@@ -25,7 +26,7 @@ try:
         st.stop()
 
     # モデルのロード
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    model = models.GenerativeModel('gemini-2.5-flash')
     
 except Exception as e:
     st.error(f"モデルのロードに失敗しました: {e}")
@@ -116,6 +117,7 @@ if analyze_button:
             st.write(ai_suggestion)
             
 st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
+
 
 
 
