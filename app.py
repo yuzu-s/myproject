@@ -13,7 +13,8 @@ st.markdown("---")
 try:
     # Streamlit Secretsからキーを取得
     if "GEMINI_API_KEY" in st.secrets:
-        # Streamlit CloudのSecretsからAPIキーを取得
+        # Streamlit Secretsの値を環境変数として設定
+        os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
         API_KEY = st.secrets["GEMINI_API_KEY"]
     else:
         # 環境変数（ローカル実行時など）からAPIキーを取得
@@ -22,9 +23,6 @@ try:
     if not API_KEY:
         st.error("Gemini APIキーが設定されていません。Streamlit Secretsに設定してください。")
         st.stop()
-
-    # APIキーを設定（これが最も安定した形式）
-    genai.configure(api_key=API_KEY)
 
     # モデルのロード
     model = genai.GenerativeModel('gemini-2.5-flash')
@@ -118,6 +116,7 @@ if analyze_button:
             st.write(ai_suggestion)
             
 st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
+
 
 
 
