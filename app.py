@@ -1,9 +1,9 @@
 import streamlit as st
 import time
 import google.genai as genai
-from google.genai import configure # configure関数を直接インポート
 import PyPDF2
 import io
+import os # APIキーの取得に必要
 
 # アプリのタイトルを設定
 st.title("💡 質疑応答支援AI")
@@ -11,9 +11,24 @@ st.markdown("---")
 
 # GeminiのAPIキーをsecretsから取得し設定
 try:
-    # genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    configure(api_key=API_KEY)
+    # Streamlit Secretsからキーを取得
+    if "GEMINI_API_KEY" in st.secrets:
+        # Streamlit CloudのSecretsからAPIキーを取得
+        API_KEY = st.secrets["GEMINI_API_KEY"]
+    else:
+        # 環境変数（ローカル実行時など）からAPIキーを取得
+        API_KEY = os.getenv("GEMINI_API_KEY")
+
+    if not API_KEY:
+        st.error("Gemini APIキーが設定されていません。Streamlit Secretsに設定してください。")
+        st.stop()
+
+    # APIキーを設定（これが最も安定した形式）
+    genai.configure(api_key=API_KEY)
+
+    # モデルのロード
     model = genai.GenerativeModel('gemini-2.5-flash')
+    
 except Exception as e:
     st.error(f"モデルのロードに失敗しました: {e}")
     st.stop()
@@ -103,5 +118,6 @@ if analyze_button:
             st.write(ai_suggestion)
             
 st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
+
 
 
